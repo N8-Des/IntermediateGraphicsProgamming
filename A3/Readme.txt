@@ -1,0 +1,1 @@
+I chose the Fix Min Exponential falloff, as I think it was the cleanest of the options. Not only was the equation simple, but the graph was smooth and felt the most realistic compared to its equation complexity. 
