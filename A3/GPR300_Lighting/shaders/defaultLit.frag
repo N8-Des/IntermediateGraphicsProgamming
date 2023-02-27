@@ -109,7 +109,7 @@ vec3 calculatePointLight(PointLight light)
 void main()
 {
     vec3 result = vec3(0);
-    //result += calculateDirectionalLight(_DirectionalLight);
+    result += calculateDirectionalLight(_DirectionalLight);
     for(int i = 0; i < MAX_LIGHTS; i++)
     {
         result += calculatePointLight(_PointLights[i]);
