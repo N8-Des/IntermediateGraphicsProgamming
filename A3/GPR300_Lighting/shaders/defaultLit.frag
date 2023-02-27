@@ -112,7 +112,7 @@ void main()
     //result += calculateDirectionalLight(_DirectionalLight);
     for(int i = 0; i < MAX_LIGHTS; i++)
     {
-        //result += calculatePointLight(_PointLights[i]);
+        result += calculatePointLight(_PointLights[i]);
     }
     result += calculateSpotLight(_SpotLight);
     color = vec4(result, 1.0);
