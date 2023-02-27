@@ -294,6 +294,17 @@ int main() {
 		ImGui::DragFloat3("Point Light 2 Position", &pointLight2.position.x);
 		ImGui::End();
 
+		ImGui::Begin("Spotlight Settings");
+		ImGui::DragFloat3("Spotlight Position", &spotlight.position.x);
+		ImGui::DragFloat3("Spotlight Direction", &spotlight.direction.x);
+
+		ImGui::SliderFloat("Spotlight Intensity", &spotlight.intensity, 0, 5);
+		ImGui::SliderFloat("Spotlight Atten.", &spotlight.attenuation, 0, 5);
+		ImGui::ColorEdit3("Spotlight Color", &spotlight.color.r);
+		ImGui::SliderFloat("Spotlight Min Angle", &spotlight.minAngle, 0, 360);
+		ImGui::SliderFloat("Spotlight Max Angle", &spotlight.maxAngle, 0, 360);
+		ImGui::End();
+
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
