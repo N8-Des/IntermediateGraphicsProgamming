@@ -180,6 +180,41 @@ int main() {
 	SpotLight spotlight;
 	spotlight.position = glm::vec3(0, 2, 0);
 	spotlight.direction = glm::vec3(0, -1, 0);
+
+	GLuint textureRock;
+	glGenTextures(1, &textureRock);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureRock);
+
+	int width, height, numComponents;
+	stbi_set_flip_vertically_on_load(true);
+	unsigned char* textureData = stbi_load("Rock.png", &width, &height, &numComponents, 0);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
+
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	GLuint textureCat;
+	glGenTextures(1, &textureCat);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, textureCat);
+
+	stbi_set_flip_vertically_on_load(true);
+	textureData = stbi_load("Cat.png", &width, &height, &numComponents, 0);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
+
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
 		glClearColor(bgColor.r,bgColor.g,bgColor.b, 1.0f);
@@ -196,6 +231,7 @@ int main() {
 		//Draw
 		litShader.use();
 
+		litShader.setFloat("_Time", time);
 		litShader.setMat4("_Projection", camera.getProjectionMatrix());
 		litShader.setMat4("_View", camera.getViewMatrix());
 
@@ -223,6 +259,11 @@ int main() {
 		litShader.setFloat("_SpotLight.attenuation", spotlight.attenuation);
 		litShader.setFloat("_SpotLight.minAngle", spotlight.minAngle);
 		litShader.setFloat("_SpotLight.maxAngle", spotlight.maxAngle);
+
+		//textures
+		litShader.setInt("_Texture1", 0);
+		litShader.setInt("_Texture2", 1);
+
 
 
 		//view position
@@ -294,16 +335,7 @@ int main() {
 		ImGui::DragFloat3("Point Light 2 Position", &pointLight2.position.x);
 		ImGui::End();
 
-		ImGui::Begin("Spotlight Settings");
-		ImGui::DragFloat3("Spotlight Position", &spotlight.position.x);
-		ImGui::DragFloat3("Spotlight Direction", &spotlight.direction.x);
 
-		ImGui::SliderFloat("Spotlight Intensity", &spotlight.intensity, 0, 5);
-		ImGui::SliderFloat("Spotlight Atten.", &spotlight.attenuation, 0, 5);
-		ImGui::ColorEdit3("Spotlight Color", &spotlight.color.r);
-		ImGui::SliderFloat("Spotlight Min Angle", &spotlight.minAngle, 0, 360);
-		ImGui::SliderFloat("Spotlight Max Angle", &spotlight.maxAngle, 0, 360);
-		ImGui::End();
 
 
 		ImGui::Render();

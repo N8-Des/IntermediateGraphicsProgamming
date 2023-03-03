@@ -3,11 +3,16 @@ out vec4 FragColor;
 
 in vec3 WorldPos;
 in vec3 WorldNormal;
+in vec2 uv;
 
 out vec4 color;
 
 uniform vec3 _ViewPos;
 
+uniform sampler2D _Texture1;
+uniform sampler2D _Texture2;
+
+uniform float _Time;
 
 struct PointLight
 {
@@ -64,7 +69,7 @@ vec3 calculateDirectionalLight(DirectionalLight light)
     vec3 diffuse = diff * light.color * light.intensity;
     vec3 specular = spec * light.color * light.intensity;
     vec3 ambient = _Material.ambientK * light.intensity * light.color;
-    result = (ambient + diffuse + specular) * _Material.color;    
+    result = (ambient + diffuse + specular);    
     return result;
 };
 
@@ -114,6 +119,8 @@ void main()
     {
         result += calculatePointLight(_PointLights[i]);
     }
-    result += calculateSpotLight(_SpotLight);
-    color = vec4(result, 1.0);
+    vec2 newUV = vec2(uv.x + _Time, uv.y);
+    float t = clamp(sin(_Time), 0, 1);
+    vec4 lerpedTex = texture(_Texture1, uv) * (1.0f - t) + texture(_Texture2, uv) * t;
+    color = vec4(result, 1.0) * lerpedTex;
 }
