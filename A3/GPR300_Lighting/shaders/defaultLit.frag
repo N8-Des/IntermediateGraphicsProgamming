@@ -121,6 +121,6 @@ void main()
     }
     vec2 newUV = vec2(uv.x + _Time, uv.y);
     float t = clamp(sin(_Time), 0, 1);
-    vec4 lerpedTex = texture(_Texture1, uv) * (1.0f - t) + texture(_Texture2, uv) * t;
+    vec4 lerpedTex = texture(_Texture1, newUV) * (1.0f - t) + texture(_Texture2, newUV) * t;
     color = vec4(result, 1.0) * lerpedTex;
 }

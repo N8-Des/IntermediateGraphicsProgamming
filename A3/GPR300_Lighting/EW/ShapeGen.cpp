@@ -158,9 +158,7 @@ namespace ew {
 				glm::vec3 position = glm::vec3(x, y, z);
 				glm::vec3 normal = glm::normalize(glm::vec3(x, y, z));
 
-				float u = atan(z / x) / (2 * glm::pi<float>());
-				float v = acos(y) / glm::pi<float>();
-				meshData.vertices.push_back({position, normal, glm::vec2(u, v)});
+				meshData.vertices.push_back({position, normal, glm::vec2(theta / glm::pi<float>(), phi)});
 			}
 		}
 
@@ -250,8 +248,7 @@ namespace ew {
 			glm::vec3 pos = meshData.vertices[i + 1].position;
 			glm::vec3 normal = glm::normalize((pos - meshData.vertices[0].position));
 			float positionX = (float)i / (float)numSegments;
-			float u = atan(pos.z / pos.x) / (2 * glm::pi<float>());
-			meshData.vertices.push_back(Vertex(pos, normal, glm::vec2(u, 1)));
+			meshData.vertices.push_back(Vertex(pos, normal, glm::vec2(positionX, 1)));
 		}
 		//Side bottom ring
 		for (int i = 0; i <= numSegments; i++)
@@ -259,9 +256,7 @@ namespace ew {
 			glm::vec3 pos = meshData.vertices[bottomCenterIndex + i + 1].position;
 			glm::vec3 normal = glm::normalize((pos - meshData.vertices[bottomCenterIndex].position));
 			float positionX = (float)i / (float)numSegments; 
-			float u = atan(pos.z / pos.x) / (2 * glm::pi<float>());
-
-			meshData.vertices.push_back(Vertex(pos, normal, glm::vec2(u, 0)));
+			meshData.vertices.push_back(Vertex(pos, normal, glm::vec2(positionX, 0)));
 		}
 
 		//INDICES

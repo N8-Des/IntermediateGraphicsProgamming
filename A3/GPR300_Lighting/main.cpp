@@ -88,6 +88,7 @@ struct Material
 	float specularK = 0.5f;
 	float shininess = 150.0f;
 };
+
 int main() {
 	if (!glfwInit()) {
 		printf("glfw failed to init");
